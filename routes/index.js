@@ -109,10 +109,8 @@ router.post('/newCheckout', function(req, res){
 router.get('/postPayment', function(req, res) {
 		// Grab Dwolla's proposed signature
     signature = req.query['signature'];
-    console.log(signature);
     // Grab Dwolla's checkout ID
     checkout_id = req.query['checkoutId'];
-    console.log(checkout_id);
     // Grab the reported total transaction amount
     amount = req.query['amount'];
     // Grab the transaction Id
@@ -125,10 +123,10 @@ router.get('/postPayment', function(req, res) {
 	    } else {
 	        return res.send("<p>Dwolla's signature failed to verify. You shouldn't process the order before some manual verification.</p>");
 	    }
-    User.find({ where: {dwolla_id: req.query['destinationId']} }).success(function(project) {
-  // project will be the first entry of the Projects table with the title 'aProject' || null
+    User.find({ where: {dwolla_id: req.query['destinationId']} }).success(function(user) {
+      var hash_val = user.md5_hashVal;
     });
-
+    
     request.post(
     req.query['x_relay_url'],
     { form: { x_response_code: 1, x_response_reason_code: 1, x_trans_id: transaction_id, x_amount: amount, x_MD5_hash: md5hashstring } },
