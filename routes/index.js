@@ -106,7 +106,7 @@ router.post('/newCheckout', function(req, res) {
         allowGuestCheckout: true,
         additionalFundingSources: true,
         orderId: req.body.x_invoice_num,
-        callback: 'http://requestb.in/1men50c1'
+        callback: 'http://requestb.in/p17nx5p1'
     };
     Dwolla.createCheckout(redirect_uri, purchaseOrder, params, function(err, checkout) {
         if (err) console.log(err);
