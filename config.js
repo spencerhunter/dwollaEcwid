@@ -5,6 +5,6 @@ module.exports = {
   , pin: process.env.DWOLLA_PIN || null
   , host: process.env.HOST || 'http://localhost:3000'
   , mysql: {
-  	uri: process.env.DATABASE_URL || 'mysql://root:root@localhost:3306/ecwidTesting',
+  	uri: process.env.CLEARDB_DATABASE_URL || 'mysql://root:root@localhost:3306/ecwidTesting',
   }
 }
