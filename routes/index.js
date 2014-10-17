@@ -114,7 +114,7 @@ router.post('/newCheckout', function(req, res) {
     });
 });
 
-router.post('/postPayment', function(req, res) {
+router.get('/postPayment', function(req, res) {
     //if error is !null then display error and give the user the option to kickoff a new checkout??
     if (req.query['error'] != null){
       //change this to render postPayment page and display error. Also, request.post bad details to send the user back to the store.
