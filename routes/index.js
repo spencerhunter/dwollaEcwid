@@ -94,7 +94,7 @@ router.get('/logout', function (req, res) {
 
 router.post('/newCheckout', function(req, res) {
     var destinationId = req.body.x_login; // grab x_login_id from POST, if no dest Id throw gateway error
-    var redirect_uri = '/postPayment?x_relay_url=' + req.body.x_relay_url + '&destinationId=' + destinationId;
+    var redirect_uri = c.host + '/postPayment?x_relay_url=' + req.body.x_relay_url + '&destinationId=' + destinationId;
     // 'http://requestb.in/1men50c1?x_relay_url=' + req.body.x_relay_url + '&destinationId=' + destinationId;
     var purchaseOrder = {
         destinationId: destinationId,
