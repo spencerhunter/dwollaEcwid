@@ -121,12 +121,12 @@ router.post('/newCheckout', function(req, res) {
               res.send(util.format('Checkout created.  Click to continue: <a href="%s">%s</a>', checkout.checkoutURL, checkout.checkoutURL));
           });
         }).catch(function(err) {
-            console.log("Destination Dwolla account not found. The merchant has not set up their Dwolla payment settings properly" + err);
+            res.send("Destination Dwolla account not found. The merchant has not set up their Dwolla payment settings properly");
             //Change from console to res.send or res.render
         })
         //end
     } else {
-      console.log("Your merchant has not setup their account correctly");
+      res.send("Your merchant has not setup their account correctly");
       //Change from console to res.send or res.render
     }
     
