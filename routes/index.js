@@ -118,7 +118,7 @@ router.post('/newCheckout', function(req, res) {
           };
           Dwolla.createCheckout(redirect_uri, purchaseOrder, params, function(err, checkout) {
               if (err) console.log(err);
-              res.send(util.format('Checkout created.  Click to continue: <a href="%s">%s</a>', checkout.checkoutURL, checkout.checkoutURL));
+              res.redirect(checkout.checkoutURL);
           });
         }).catch(function(err) {
             res.send("Destination Dwolla account not found. The merchant has not set up their Dwolla payment settings properly.");
@@ -137,22 +137,6 @@ router.get('/postPayment', function(req, res) {
       if (req.query['error'] != null){
       //change this to render postPayment page and display error. Also, request.post bad details to send the user back to the store.
       res.send('There was an error with the checkout. Error description: ' + req.query['error_description']); 
-      request.post(
-                req.query['x_relay_url'], {
-                    form: {
-                        x_response_code: 0,
-                        x_response_reason_code: 0,
-                        x_trans_id: transaction_id,
-                        x_invoice_num: orderId,
-                        x_amount: amount,
-                        x_MD5_hash: md5hashstring
-                    }
-                },
-                function(error, response, body) {
-                    if (!error && response.statusCode == 200) {
-                        res.send(body);
-                    } //else display error of POST to Ecwid
-                })
     }
     // Grab Dwolla's proposed signature
     signature = req.query['signature'];
