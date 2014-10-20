@@ -93,25 +93,43 @@ router.get('/logout', function (req, res) {
 }); 
 
 router.post('/newCheckout', function(req, res) {
+  //Check to see if destination ID exists. if it doesn't exist, throw an error that Merchant has incorrectly
     var destinationId = req.body.x_login; // grab x_login_id from POST, if no dest Id throw gateway error
-    var redirect_uri = c.host + '/postPayment?x_relay_url=' + req.body.x_relay_url + '&destinationId=' + destinationId;
-    // 'http://requestb.in/1men50c1?x_relay_url=' + req.body.x_relay_url + '&destinationId=' + destinationId;
-    var purchaseOrder = {
-        destinationId: destinationId,
-        total: req.body.x_amount,
-        notes: req.body.x_description + ' -- Invoice number: ' + req.body.x_invoice_num
-    };
-    var params = {
-        allowFundingSources: true,
-        allowGuestCheckout: true,
-        additionalFundingSources: true,
-        orderId: req.body.x_invoice_num,
-        callback: 'http://requestb.in/p17nx5p1'
-    };
-    Dwolla.createCheckout(redirect_uri, purchaseOrder, params, function(err, checkout) {
-        if (err) console.log(err);
-        res.redirect(checkout.checkoutURL);
-    });
+    if (destinationId != null) {
+      //Start
+      User.find({
+            where: {
+                dwolla_id: destinationId //change to x_login_id
+            }
+        }).then(function(user) {
+          var redirect_uri = c.host + '/postPayment?x_relay_url=' + req.body.x_relay_url + '&destinationId=' + user.dwolla_id;
+          // 'http://requestb.in/1men50c1?x_relay_url=' + req.body.x_relay_url + '&destinationId=' + destinationId;
+          var purchaseOrder = {
+              destinationId: user.dwolla_id,
+              total: req.body.x_amount,
+              notes: req.body.x_description + ' -- Invoice number: ' + req.body.x_invoice_num
+          };
+          var params = {
+              allowFundingSources: true,
+              allowGuestCheckout: true,
+              additionalFundingSources: true,
+              orderId: req.body.x_invoice_num,
+              callback: 'http://requestb.in/p17nx5p1'
+          };
+          Dwolla.createCheckout(redirect_uri, purchaseOrder, params, function(err, checkout) {
+              if (err) console.log(err);
+              res.send(util.format('Checkout created.  Click to continue: <a href="%s">%s</a>', checkout.checkoutURL, checkout.checkoutURL));
+          });
+        }).catch(function(err) {
+            console.log("Destination Dwolla account not found. The merchant has not set up their Dwolla payment settings properly" + err);
+            //Change from console to res.send or res.render
+        })
+        //end
+    } else {
+      console.log("Your merchant has not setup their account correctly");
+      //Change from console to res.send or res.render
+    }
+    
 });
 
 router.get('/postPayment', function(req, res) {
