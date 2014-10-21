@@ -117,7 +117,7 @@ router.post('/newCheckout', function(req, res) {
               callback: c.host + '/postPayment'
           };
           Dwolla.createCheckout(redirect_uri, purchaseOrder, params, function(err, checkout) {
-              if (err) console.log(err);
+              if (err) res.send(err);
               res.redirect(checkout.checkoutURL);
           });
         }).catch(function(err) {
