@@ -50,6 +50,12 @@ router.get('/auth/dwolla', function(req, res) {
   return res.redirect(authUrl);
 });
 
+router.get('/logout', function (req, res) {
+  req.session.access_token = false;
+  delete req.session.access_token;
+  return res.redirect('/');
+}); 
+
 router.get('/oauth_return', function(req, res) {
   var code = req.query.code;
   var redirect_uri = c.host + '/oauth_return';
@@ -89,11 +95,6 @@ router.get('/dashboard', function(req, res) {
       })
   });
 });
-
-router.get('/logout', function (req, res) {
-  delete req.session.access_token;
-  res.redirect('/');
-}); 
 
 router.post('/newCheckout', function(req, res) {
   //Check to see if destination ID exists. if it doesn't exist, throw an error that Merchant has incorrectly
