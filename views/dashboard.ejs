@@ -3,11 +3,19 @@
 <div class="row">
 	<div class="col-sm-6">
 		<h2>Merchant Information</h2>
-		<p>Welcome</p> 
-		<p>Dwolla Id: <%=dId %></p>
-		<p>MD5 Hash Value: <%=name %></p>
+		<h4>Welcome - <%=name %></h4> 
+		<p>API Login Id: <%=dId %></p>
+		<p>Transaction Key: Dwolla</p>
+		<p>MD5 Hash Value: <%=md5Val %></p>
+		<p>Transaction Type: Authorize and Capture</p>
+		<h5>Advanced Settings</h5>
+		<p>Endpoint URL: http://dwolla-ecwid.herokuapp.com/newCheckout</p>
 	</div>
-
+	<div class="col-sm-9 instructions">
+	<h2>Guide: Setting up Dwolla in your Ecwid Store</h2>	
+		<p>1. Navigate to System Settings and select the Payment page.</p>
+		<img src="https://www.dropbox.com/s/gmjqaocevcu5xov/Screenshot%202014-10-23%2009.15.44.png?dl=0" class="img-responsive">
+	</div>		
 </div>
 
 
