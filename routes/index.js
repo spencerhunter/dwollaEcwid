@@ -22,7 +22,8 @@ sequelize
 
 var User = sequelize.define('User', {
   dwolla_id: Sequelize.STRING,
-  md5_hashVal: Sequelize.STRING
+  md5_hashVal: Sequelize.STRING,
+  fullName: Sequelize.STRING
 });
 
 sequelize
@@ -76,12 +77,14 @@ router.get('/dashboard', function(req, res) {
       .spread(function(user, created) {
         if (created == true) {
           user.md5_hashVal = makeid();
+          user.fullName = data.Name;
           user.save();
         }
         console.log(created)
         res.render('dashboard', {
+          name: user.fullName,
           dId: user.dwolla_id,
-          name: user.md5_hashVal
+          md5Val: user.md5_hashVal
         });
       })
   });
